@@ -1,3 +1,5 @@
 # Copyright Red Hat
-Organization: my-org
-ControllerComputeServiceAccountNamespace: default
+ComputeAPIBindingName: acm-kubernetes
+ComputeWorkspacePath: root:itdove:compute
+UserWorkspacePath: root:idove:ws
+ControllerComputeServiceAccountNamespace: compute-config

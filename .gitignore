@@ -47,3 +47,6 @@ kubeconfig
 .kcp
 .testenv
 .sakcp
+
+#local configuration files
+resources/compute-templates/my-hack-values.yaml

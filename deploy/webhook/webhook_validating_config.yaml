@@ -5,7 +5,7 @@ kind: ValidatingWebhookConfiguration
 metadata:
   name: compute-operator-webhook-service
 webhooks:
-  - name: admission.singapore.open-cluster-management.io
+  - name: api.aws-4-10-16-sno-2x-e2e-d4hh7.mgdsvcs.red-chesterfield.com
     admissionReviewVersions: 
       - v1beta1
     sideEffects: None
@@ -29,7 +29,10 @@ webhooks:
           - clusterregistrars
     failurePolicy: Fail
     clientConfig:
-      service:
-        namespace: default
-        name: kubernetes
-        path: /apis/admission.singapore.open-cluster-management.io/v1alpha1/registeredclustervalidators
+      # caBundle: LS0tLS1CRUdJTiBDRVJUSUZJQ0FURS0tLS0tCk1JSUMvakNDQWVZQ0ZHWkU3eVdPNkxpUFZ5dVZVaEdTUlhEbi9RZXBNQTBHQ1NxR1NJYjNEUUVCQ3dVQU1DOHgKTFRBckJnTlZCQU1NSkVGa2JXbHpjMmx2YmlCRGIyNTBjbTlzYkdWeUlGZGxZbWh2YjJzZ1JHVnRieUJEUVRBZQpGdzB5TWpBNE1EUXhOVEF4TlRsYUZ3MHlNakE1TURNeE5UQXhOVGxhTUVneFJqQkVCZ05WQkFNTVBXRndhUzVoCmQzTXROQzB4TUMweE5pMXpibTh0TW5ndFpUSmxMV1EwYUdnM0xtMW5aSE4yWTNNdWNtVmtMV05vWlhOMFpYSm0KYVdWc1pDNWpiMjB3Z2dFaU1BMEdDU3FHU0liM0RRRUJBUVVBQTRJQkR3QXdnZ0VLQW9JQkFRRGpwNGEwQUpXUgpueUJTNStVZk8xdFpnRUNaM2JUQkhneHFuc2x4bVB2Tk1NUE9mSTU4L2NneTVlU3NCSzJVc1RTemJKVVFTQzdiClk3Y0hWSnFQcm13RnR2UUxwdHlBSzdFck5LZW1lR2dPdGN5Z3JJUzJ3RGVVcU43cENKZDVFRW42a2dVQ2NHZjkKclBHSXdXQ1M2WDhudlZsWG44NUV1aHRPMWRnR1oyV0NyMlBXWnVDZWRleXhUQ1N5OGpQS3Z1MEd4Ykx6OTl6RwpiU29HRW5sbzd6UnIyMXFHUHBCUjl1RzVuTWRIQUdSRFk4czVmZmJBY2RRUjJCak1aRld6cGNqa1ZyYXJ3M1FqCmJRRFVJKzZwVzJOYU83R1ptSlhBWlYvRm1GZ2FOV0Znc3NNWlgrVWZ2a1hPWE5lV0IrVTVPOEtMVTY1QTZYdEsKdkZESVI3MGRVckRwQWdNQkFBRXdEUVlKS29aSWh2Y05BUUVMQlFBRGdnRUJBRGsvaEphczZVSlRjQWJvdnNobQpoS3h3bFVxQ3dXdHZQdTRnQ3lYSXVjTHV3R0QvbnkwQ252QTlCUm94NHZGL04ya3M3dVNiekxEaFZlTzBoUmdMCmlYRDY3Z2tWakNZcU5RVTk1YjBNSVIvZVc5ejJLWkF4dElsUThXKzVHcUl3ZEVwVmlWcis0NEVReHV5Y2tzNW8KbXRtYTluejZUeER4dEw4ZWk1eXFZRDZZMyt4elRteDZYNCtPYVZkR2luODE2NVdxdVFIS0N2M0RUaVFtOVorZQo0WTFTUTJxdDRsdXlWQmpJYkozZ2MxSTdmVytka25vTUZmSTUyQm91eU51WW90em9mSmJOM2JvUjhVV0Qyb3N1CmhwYzI0TGZLekFHL1UreUQ3YmczdVJNRXFSSkpueWg1dm9YTEdhQ0I0K1NpTDQ4bzd2VGo4Um1SQWJpLzE4VG0KMDRZPQotLS0tLUVORCBDRVJUSUZJQ0FURS0tLS0tCg==
+      url: webhook.apps.itdove.mgdsvcs.red-chesterfield.com/apis/admission.singapore.open-cluster-management.io/v1alpha1/registeredclustervalidators
+      # service:
+      #   namespace: default
+      #   name: kubernetes
+      #   path: /apis/admission.singapore.open-cluster-management.io/v1alpha1/registeredclustervalidators
+      #   path: https://api.aws-4-10-16-sno-2x-e2e-d4hh7.mgdsvcs.red-chesterfield.com:6443/apis/admission.singapore.open-cluster-management.io/v1alpha1/registeredclustervalidators

@@ -60,8 +60,10 @@ kubectl create serviceaccount compute-operator -n default
 ```
 4. Generate the kubeconfig from this SA
 ```bash
-# build/generate_kubeconfig_from_sa.sh sa_name sa_namespace kubeconfig_filename
-build/generate_kubeconfig_from_sa.sh <kcp-kubeconfig> compute-operator default /tmp/kubeconfig-compute-operator.yaml
+
+# build/generate_kubeconfig_from_sa.sh $KUBECONFIG sa_name sa_namespace kubeconfig_filename
+# The kubeconfig is the one you currently use to reach kcp and must be an absolute path
+build/generate_kubeconfig_from_sa.sh $KUBECONFIG compute-operator default /tmp/kubeconfig-compute-operator.yaml
 ```
 The location of the new kubeconfig will be displayed
 ```
@@ -117,7 +119,11 @@ kubectl api-resources | grep deployment
 export QUAY_USER=<your_user>
 export IMG_TAG=<tag_you_want_to_use>
 export IMG=quay.io/${QUAY_USER}/compute-operator:${IMG_TAG}
-make docker-build docker-push deploy
+export POD_NAMESPACE=compute-config
+export HUB_KUBECONFIG=/tmp/managed-hub-cluster.kubeconfig
+export KCP_KUBECONFIG=/tmp/kubeconfig-compute-operator.yaml
+oc new-project $POD_NAMESPACE
+make docker-build docker-push install-prereqs deploy
 ```
 
 If you are running on kcp, you will need to skip installing the webhook for now until Services are supported. Run the `make deploy` with SKIP_WEBHOOK=true.

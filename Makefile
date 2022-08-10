@@ -27,6 +27,9 @@ BUNDLE_IMG ?= ${IMAGE_TAG_BASE}-bundle:${VERSION}
 # Skip webhook on kcp until Services are supported
 SKIP_WEBHOOK ?= false
 
+#SYNCER inage
+SYNCER_IMAGE ?= ghcr.io/kcp-dev/kcp/syncer:release-0.7
+
 # Get the currently used golang install path (in GOPATH/bin, unless GOBIN is set)
 ifeq (,$(shell go env GOBIN))
 GOBIN=$(shell go env GOPATH)/bin
@@ -185,7 +188,7 @@ ifeq (, $(shell kubectl plugin list 2>/dev/null | grep kubectl-kcp))
 		cd $$KCP_TMP_DIR ;\
 		git clone https://github.com/kcp-dev/kcp.git ;\
 		cd kcp ;\
-		git checkout v0.7.0; \
+		git checkout v0.7.1; \
 		make install WHAT="./cmd/kubectl-kcp"; \
 		make install WHAT="./cmd/kcp"; \
 	)
@@ -304,6 +307,20 @@ docker-push:
 	docker push ${IMG}
 
 
+# Create a compute workload in a workspace
+add-compute: 
+# Add a compute 
+ifndef clustername 
+	@echo 'clustername must be defined'
+else
+	@echo ${clustername}
+	applier render --path resources/compute-templates/compute/apibinding.yaml --values resources/compute-templates/my-hack-values.yaml | kubectl apply -f -
+	kubectl kcp workload sync ${clustername} --syncer-image ${SYNCER_IMAGE} --output-file=syncer.yaml
+endif
+
+create-serviceaccount:
+
+
 # Deploy controller in the configured Kubernetes cluster in ~/.kube/config
 deploy: kustomize
 	cp config/installer/kustomization.yaml config/installer/kustomization.yaml.tmp
@@ -330,15 +347,14 @@ manifests: controller-gen yq/install kcp-plugin generate
 
 samples: applier
 # Later we can use `cm apply custom-resources --paths .. --values ... --dry-run --outpute-file ...` to generate the files
-	rm -rf hack/compute/*
-	cp resources/compute-templates/workspace/* hack/compute
-	cp resources/compute-templates/virtual-workspace/* hack/compute
-	applier render --paths resources/compute-templates/workspace/apibinding.yaml \
-	               --values resources/compute-templates/hack-values.yaml --output-file hack/compute/apibinding.yaml
-	applier render --paths resources/compute-templates/virtual-workspace/namespace.yaml \
-	               --values resources/compute-templates/hack-values.yaml --output-file hack/compute/namespace.yaml
-	applier render --paths resources/compute-templates/virtual-workspace/service_account.yaml \
-	               --values resources/compute-templates/hack-values.yaml --output-file hack/compute/service_account.yaml
+	rm -rf hack/compute/* ; \
+	TMP_DIR=$$(mktemp -d); \
+	applier render --path resources/compute-templates/workspace \
+				   --path resources/compute-templates/virtual-workspace \
+	               --values resources/compute-templates/hack-values.yaml \
+				   --output-dir $$TMP_DIR; \
+	mv $$TMP_DIR/resources/compute-templates/workspace/* hack/compute; \
+	mv $$TMP_DIR/resources/compute-templates/virtual-workspace/* hack/compute;
 	
 
 # Generate code
@@ -346,6 +362,8 @@ generate: kubebuilder-tools controller-gen register-gen
 	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
 
 install-prereqs: generate manifests
+	applier apply --path resources/compute-templates/virtual-workspace --values resources/compute-templates/my-hack-values.yaml
+	build/generate_kubeconfig_from_sa.sh ${KUBECONFIG} compute-operator compute-config ${KCP_KUBECONFIG}
 	kubectl delete secret mce-kubeconfig-secret -n ${POD_NAMESPACE} --ignore-not-found
 	kubectl create secret generic mce-kubeconfig-secret -n ${POD_NAMESPACE} --from-file=kubeconfig=${HUB_KUBECONFIG}
 	kubectl delete secret kcp-kubeconfig -n ${POD_NAMESPACE} --ignore-not-found

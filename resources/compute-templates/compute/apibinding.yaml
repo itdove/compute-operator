@@ -1,0 +1,11 @@
+# Copyright Red Hat
+# Run `make samples` if you modified the orginal file located in the project resources directory
+apiVersion: apis.kcp.dev/v1alpha1
+kind: APIBinding
+metadata:
+  name: {{ .ComputeAPIBindingName }}
+spec:
+  reference:
+    workspace:
+      path: {{ .ComputeWorkspacePath }}
+      exportName: kubernetes

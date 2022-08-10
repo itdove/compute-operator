@@ -1,0 +1,65 @@
+kind: Route
+apiVersion: route.openshift.io/v1
+metadata:
+  name: webhook-route
+  annotations:
+    kubernetes.io/tls-acme: 'true'
+spec:
+  host: webhook.apps.itdove.mgdsvcs.red-chesterfield.com
+  to:
+    kind: Service
+    name: compute-operator-webhook-service
+    weight: 100
+  port:
+    targetPort: 6443
+  tls:
+    termination: reencrypt
+    destinationCACertificate: |
+      -----BEGIN CERTIFICATE-----
+      MIIEaDCCA1CgAwIBAgIIUYB+ko9MO0wwDQYJKoZIhvcNAQELBQAwNjE0MDIGA1UE
+      Awwrb3BlbnNoaWZ0LXNlcnZpY2Utc2VydmluZy1zaWduZXJAMTY1OTU1NjI0NzAe
+      Fw0yMjA4MDQyMTUxMThaFw0yNDA4MDMyMTUxMTlaMFIxUDBOBgNVBAMTR2NvbXB1
+      dGUtb3BlcmF0b3Itd2ViaG9vay1zZXJ2aWNlLmtjcC1zeW5jZXItaXRkb3ZlLWNv
+      bXB1dGUtdDc0ejQ5Z2Muc3ZjMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+      AQEA7qP64vC5bNNDxIOMNx7ScL5uRAMTnj0LG3G0qNJwMUfqv2d89zjme+u6eXgZ
+      iyaSG4kEw92770cV3JIwWTd25zNrH6IcS7wywbL0JM8SWC62c+ZEZc+u0qPeWy/Y
+      Ih+YGiz7X6f3UXypQRZV3hdWl7WFp2GHK1fUGtU8MRc3WCFStoqWIHMP2qgPbSML
+      hJtbKhsfyZn1dd9EzwoO+Y8vO1v34Cijfkxt9gENgjUgBhUXuaZpUKzzAIvXPhj9
+      atHuMaDlb6ddkWzpox3bSALHgDSPAFNmpOFJQBU7mcboKJVbNuk+atv/z3QHi/ha
+      aEHchmFmBm9K6Z6BEeBR624NPwIDAQABo4IBXDCCAVgwDgYDVR0PAQH/BAQDAgWg
+      MBMGA1UdJQQMMAoGCCsGAQUFBwMBMAwGA1UdEwEB/wQCMAAwHQYDVR0OBBYEFDqS
+      hzWnHH2mOAlOISxngi63VD7mMB8GA1UdIwQYMBaAFKXL9YuCJ7yD3gap7y07tKze
+      lZSIMIGrBgNVHREEgaMwgaCCR2NvbXB1dGUtb3BlcmF0b3Itd2ViaG9vay1zZXJ2
+      aWNlLmtjcC1zeW5jZXItaXRkb3ZlLWNvbXB1dGUtdDc0ejQ5Z2Muc3ZjglVjb21w
+      dXRlLW9wZXJhdG9yLXdlYmhvb2stc2VydmljZS5rY3Atc3luY2VyLWl0ZG92ZS1j
+      b21wdXRlLXQ3NHo0OWdjLnN2Yy5jbHVzdGVyLmxvY2FsMDUGCysGAQQBkggRZAIB
+      BCYTJDM4MThjNTdiLTE4MzYtNDYxNS05Zjg0LTgzMTkyMTkyOTkwYTANBgkqhkiG
+      9w0BAQsFAAOCAQEAb8mtU7QvjKdNIF34Vp9A6mTHO4jgw4xu3cPF1jpiCXVoCEef
+      i9IH1vvLEHriZSCRgZumvbAhqwcwde/IwG8GWQkfjQDWUaCbe6+UM2ApUqDAYKvr
+      0mD+1rTctYxE94fBG5sOHdfB5pZVq/tGaPe8kao4c5oDJscx4hEsICG94YBtU+Bh
+      Emk+RigYw7VHWFrbVEQKYsm5onEfJXGopQE0KL3DYqwTm+YSq7sGpI9jAv94+UFz
+      wqBvJHAmZ1zHWLOj8fVJbDSJaLx0at1pACedIqyqUmqlSV98SiYD9fPOZvFVA9kO
+      5DTka5zN1HCiP3xTLmdcvOI9xDYvtwKcHmcDsQ==
+      -----END CERTIFICATE-----
+      -----BEGIN CERTIFICATE-----
+      MIIDUTCCAjmgAwIBAgIIKb3onMUmkHgwDQYJKoZIhvcNAQELBQAwNjE0MDIGA1UE
+      Awwrb3BlbnNoaWZ0LXNlcnZpY2Utc2VydmluZy1zaWduZXJAMTY1OTU1NjI0NzAe
+      Fw0yMjA4MDMxOTUwNDdaFw0yNDEwMDExOTUwNDhaMDYxNDAyBgNVBAMMK29wZW5z
+      aGlmdC1zZXJ2aWNlLXNlcnZpbmctc2lnbmVyQDE2NTk1NTYyNDcwggEiMA0GCSqG
+      SIb3DQEBAQUAA4IBDwAwggEKAoIBAQCxPAiW3sGrxZICoZtTefhdHkqETT1PIHE1
+      IiGrH7vOiYJwCizmz7yFkLTU4X3v4OqTUrtuN+7XXQK9FsK0IrYuyBeiK3bjYQyT
+      RfPEXQIyjt6SLncvSob5dI1jgSyFLY5eKrBhG1qro6xUYgRW3dOFhqpTjKZd1g2e
+      gLwd7pT0GBf5OVsHgmPYTli1OXIU7q48dN9Q9MqAvmbLP+ZD/HoYuVYTTicSTr/g
+      z7vPo9k+q6Fm+JID01TPyLigsoVWhvw+yxsQPWK9rE2jnK5320U+7i8IGfSzZq6q
+      EJM6Mb5Ss9uJEFthzRXQ91tb6M5ji24/XbfJGOL856Qgdiidk51ZAgMBAAGjYzBh
+      MA4GA1UdDwEB/wQEAwICpDAPBgNVHRMBAf8EBTADAQH/MB0GA1UdDgQWBBSly/WL
+      gie8g94Gqe8tO7Ss3pWUiDAfBgNVHSMEGDAWgBSly/WLgie8g94Gqe8tO7Ss3pWU
+      iDANBgkqhkiG9w0BAQsFAAOCAQEADoyyo533cxTrBDKK0HmBDWWkYlqIKlZnuVak
+      JcXzakgwc1lz1uMJ9pYwo0aFoO84XAugH2wZGFT7hHCSq8TMUFsi+xa7zns3TuM+
+      sxidAg75w4TpyK7Go3TX5PXS/nnCiy81pj5Sbcu6EklrPrThHrU2+724s5S1X//v
+      TyqofXsh2+mHAMp9DO7a8a/tZZQLPx7wmLikxjKVG7WbZFNQrzCUcmK92YxEe3as
+      a4IFSNqmqzWwkLFXdym8ED+aVRXnQZFyDK21X63vnG2XeuNAuYf8gh/Sx1KuEhdc
+      dclFvH3QYGmJHSWXUHfWikDVvyRK2O44MtEET9KBraJkFnJ3ww==
+      -----END CERTIFICATE-----
+    insecureEdgeTerminationPolicy: None
+  wildcardPolicy: None
